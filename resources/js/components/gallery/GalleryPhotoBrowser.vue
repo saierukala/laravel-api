@@ -82,7 +82,7 @@ useEventListener(window, 'keydown', (event: KeyboardEvent) => {
 <template>
     <Dialog :open="isOpen" @update:open="isOpen = $event">
         <DialogContent
-            class="max-h-[calc(100vh-2rem)] border-zinc-800 bg-zinc-950 p-0 text-white shadow-2xl sm:max-w-[calc(100vw-2rem)]"
+            class="max-h-[calc(100dvh-0.5rem)] overflow-hidden border-zinc-800 bg-zinc-950 p-0 text-white shadow-2xl sm:max-h-[calc(100vh-2rem)] sm:max-w-[calc(100vw-2rem)]"
             :show-close-button="false"
         >
             <DialogTitle class="sr-only">Photo Browser</DialogTitle>
@@ -92,20 +92,25 @@ useEventListener(window, 'keydown', (event: KeyboardEvent) => {
 
             <div
                 v-if="activeImage"
-                class="grid max-h-[calc(100vh-2rem)] grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden"
+                class="grid max-h-[calc(100dvh-0.5rem)] min-h-0 grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden sm:max-h-[calc(100vh-2rem)]"
             >
                 <header
-                    class="flex items-center justify-between gap-4 border-b border-white/10 px-4 py-3"
+                    class="flex items-start justify-between gap-2 border-b border-white/10 px-2.5 py-2 sm:px-4 sm:py-3"
                 >
-                    <div class="min-w-0">
-                        <p class="truncate text-sm font-medium">
+                    <div class="min-w-0 flex-1 pr-2">
+                        <p
+                            class="truncate text-[11px] font-medium tracking-[0.01em] text-zinc-200 sm:text-sm"
+                        >
                             {{ activeImage.original_name }}
                         </p>
-                        <p class="text-xs text-zinc-400">
+                        <p
+                            class="mt-0.5 truncate text-[9px] leading-3.5 text-zinc-500 sm:text-xs sm:leading-4"
+                        >
                             {{ positionLabel }} /
                             {{ formatFileSize(activeImage.size) }}
                             <span
                                 v-if="activeImage.width && activeImage.height"
+                                class="hidden sm:inline"
                             >
                                 / {{ activeImage.width }} x
                                 {{ activeImage.height }}
@@ -115,54 +120,54 @@ useEventListener(window, 'keydown', (event: KeyboardEvent) => {
 
                     <button
                         type="button"
-                        class="rounded-md border border-white/15 bg-white/10 p-2 text-white transition hover:bg-white/20"
+                        class="rounded-md border border-white/15 bg-white/10 p-1.5 text-white transition hover:bg-white/20 sm:p-2"
                         aria-label="Close photo browser"
                         @click="closeBrowser"
                     >
-                        <X class="h-5 w-5" />
+                        <X class="h-4 w-4 sm:h-5 sm:w-5" />
                     </button>
                 </header>
 
                 <div
-                    class="relative flex min-h-0 items-center justify-center bg-black"
+                    class="relative flex min-h-0 items-center justify-center bg-black px-1.5 py-1.5 sm:px-4 sm:py-4 lg:px-6 lg:py-5"
                 >
                     <button
                         v-if="hasMultipleImages"
                         type="button"
-                        class="absolute left-3 z-10 rounded-md border border-white/15 bg-black/60 p-3 text-white shadow-lg transition hover:bg-white/15"
+                        class="absolute top-1/2 left-1.5 z-10 -translate-y-1/2 rounded-md border border-white/15 bg-black/60 p-1.5 text-white shadow-lg transition hover:bg-white/15 sm:left-3 sm:p-2.5 lg:left-4"
                         aria-label="Previous photo"
                         @click="showPrevious"
                     >
-                        <ChevronLeft class="h-6 w-6" />
+                        <ChevronLeft class="h-4 w-4 sm:h-6 sm:w-6" />
                     </button>
 
                     <img
                         :key="activeImage.id"
                         :src="activeImage.url"
                         :alt="activeImage.original_name"
-                        class="max-h-[calc(100vh-13rem)] w-full object-contain"
+                        class="h-full max-h-full w-full max-w-full object-contain"
                     />
 
                     <button
                         v-if="hasMultipleImages"
                         type="button"
-                        class="absolute right-3 z-10 rounded-md border border-white/15 bg-black/60 p-3 text-white shadow-lg transition hover:bg-white/15"
+                        class="absolute top-1/2 right-1.5 z-10 -translate-y-1/2 rounded-md border border-white/15 bg-black/60 p-1.5 text-white shadow-lg transition hover:bg-white/15 sm:right-3 sm:p-2.5 lg:right-4"
                         aria-label="Next photo"
                         @click="showNext"
                     >
-                        <ChevronRight class="h-6 w-6" />
+                        <ChevronRight class="h-4 w-4 sm:h-6 sm:w-6" />
                     </button>
                 </div>
 
                 <footer
                     v-if="hasMultipleImages"
-                    class="flex gap-2 overflow-x-auto border-t border-white/10 bg-zinc-950 px-4 py-3"
+                    class="flex gap-1.5 overflow-x-auto border-t border-white/10 bg-zinc-950 px-2.5 py-2 sm:gap-2 sm:px-4 sm:py-3"
                 >
                     <button
                         v-for="(image, index) in images"
                         :key="image.id"
                         type="button"
-                        class="h-16 w-16 shrink-0 overflow-hidden rounded-md border transition"
+                        class="h-10 w-10 shrink-0 overflow-hidden rounded-md border transition sm:h-14 sm:w-14 lg:h-16 lg:w-16"
                         :class="
                             index === selectedIndex
                                 ? 'border-white'

@@ -238,7 +238,7 @@ const rightNavItems: NavItem[] = [
                         </div>
                     </div>
 
-                    <DropdownMenu>
+                    <DropdownMenu :modal="false">
                         <DropdownMenuTrigger :as-child="true">
                             <Button
                                 variant="ghost"
